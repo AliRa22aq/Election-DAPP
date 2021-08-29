@@ -1,5 +1,5 @@
 Initial truffle in backend with the following command. <br />
-```truffl init```
+```javascript truffl init```
 
 -truffle init this will create a truffle project with following files and folder -img
 
