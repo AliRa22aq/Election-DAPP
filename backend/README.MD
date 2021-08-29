@@ -1,38 +1,32 @@
 Initial truffle in backend with the following command. <br />
 ```javascript
-truffl init
+truffle init
 ```
 
--truffle init this will create a truffle project with following files and folder -img
+-truffle init this will create a truffle project with truffle-config.js file. Rewrite it.
 
-create a file in contracts folder Marketplace.sol to write our smart contract
-add code - explaination change truffle config, uncomment the following
-networks: {
-  development: {
-   host: "127.0.0.1",     // Localhost (default: none)
-   port: 8545,            // Standard Ethereum port (default: none)
-   network_id: "*",       // Any network (default: none)
-  },
-update solidity compiler version
-
-compilers: {
- solc: {
-   version: "0.8.6",    // Fetch exact version from solc-bin (default: truffle's version)
-   // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
-   // settings: {          // See the solidity docs for advice about optimization and evmVersion
-    optimizer: {
-      enabled: false,
-      runs: 200
-    },
-   //  evmVersion: "byzantium"
-   // }
- }
-}, 
-add the following to mention the build directory storing contracts ABI in frontend/src/abis
-
+```javascript
+module.exports = {
+  networks: {
+    development: {
+      host: "localhost",
+      port: 7545,
+      network_id: "*"
+    }
+},
 contracts_directory: './contracts/',
 contracts_build_directory: '../frontend/src/abis/',
-now lets complile the code -truffle compile
+compilers: {
+  solc: {
+    version: "^0.8.0",
+    optimizer: {
+      enabled: true,
+      runs: 200
+    }
+  }
+}
+}```
+
 
 Now we need to deploy this smart contract to Ganache
 
