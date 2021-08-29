@@ -96,7 +96,7 @@ For running the tests.
 ```
 truffle test
 ```
-for deploying the contracts to local blockchain
+For deploying the contracts to local blockchain
 ```
 truffle migrate --reset
 ```
