@@ -11,7 +11,7 @@
     ```
 
 2.  ** To Connect Metamask to our Ganache personal blockchain instance intall web3 npm package and import Web3 from 'web3' instantiates web3.
-.**
+
     ```sh
     npm i web3
     ```
