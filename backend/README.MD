@@ -3,7 +3,7 @@ Initial truffle in backend with the following command. <br />
 truffle init
 ```
 
--truffle init this will create a truffle project with truffle-config.js file. Rewrite it.
+-truffle init this will create a truffle project with truffle-config.js file. Replace it with following code.
 
 ```javascript
 module.exports = {
@@ -22,26 +22,82 @@ compilers: {
     optimizer: {
       enabled: true,
       runs: 200
+      }
     }
   }
 }
-}```
+```
 
+Next, in contract folder, create a new file with the name "Election.sol" and add following solidity code init.
 
-Now we need to deploy this smart contract to Ganache
+```javascript
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.6;
 
--touch migrations/2_deploy_contracts.js
+contract Election {
+    // Model a Candidate
+    struct Candidate {
+        uint id;
+        string name;
+        uint voteCount;
+    }
 
-This file tells Truffle to to deploy our smart contract to the blockchain. Also, note that the migration files are numbered so that Truffle knows which order to run them in.
+    // Read/write candidates
+    mapping(uint => Candidate) public candidates;
 
-add the following const Marketplace = artifacts.require("Marketplace");
+    // Store Candidates Count
+    uint public candidatesCount;
 
-truffle migrate --reset smart contract tests $ mkdir test $ touch test/Marketplace.test.js passed, add function- create product and variables to contract test again add tools to our test suite
+    // Store accounts that have voted
+    mapping(address => bool) public voters;
 
-require('chai') .use(require('chai-as-promised')) .should()
+    constructor () {
+        addCandidate("Zia Khan");
+        addCandidate("Zeeshan Hanif");
+    }
 
-write tests and test npm i "chai": "^4.3.4", "chai-as-promised": "^7.1.1",
+    function addCandidate (string memory _name) private {
+        candidatesCount ++;
+        candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
+    }
 
-add function- sell product and variables to contract add test truffle migrate --reset done
+    function vote (uint _candidateId) public {
+        // require that they haven't voted before
+        require(!voters[msg.sender]);
 
-frontend mkdir frontend npx create-react-app npm i web3 Connect Metamask to our Ganache personal blockchain instance import Web3 from 'web3' instantiates web3.
+        // require a valid candidate
+        require(_candidateId > 0 && _candidateId <= candidatesCount);
+
+        // record that voter has voted
+        voters[msg.sender] = true;
+
+        // update candidate vote Count
+        candidates[_candidateId].voteCount ++;
+    }
+
+}
+```
+Next, we need to deploy this smart contract to Ganache so in migration folder, add a file 2_deploy_contracts.js and populate it with following code.
+
+```javascript
+var Election = artifacts.require("./Election.sol");
+
+module.exports = function(deployer) {
+  deployer.deploy(Election);
+};
+```
+
+Next, before deploying our smart contract to our local blockchain, write some comprihensive tests. Inside test folder, make a file election.js and add you desired tests init.
+For compiling the contracts.
+```
+truffle compile
+```
+For running the tests.
+```
+truffle test
+```
+for deploying the contracts to local blockchain
+```
+truffle migrate --reset
+```
+
